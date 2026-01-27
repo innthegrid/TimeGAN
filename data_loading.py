@@ -26,6 +26,7 @@ import numpy as np
 
 def MinMaxScaler(data):
   """Min Max normalizer.
+  Normalize data between 0 and 1
   
   Args:
     - data: original data
@@ -33,11 +34,14 @@ def MinMaxScaler(data):
   Returns:
     - norm_data: normalized data
   """
+
+  # Min-Max Normalization = (x - min(x)) / (max(x) - min(x))
+
   numerator = data - np.min(data, 0)
   denominator = np.max(data, 0) - np.min(data, 0)
+  # Add 1e-7 to avoid zero division (case where min = max, and denominator = 0)
   norm_data = numerator / (denominator + 1e-7)
   return norm_data
-
 
 def sine_data_generation (no, seq_len, dim):
   """Sine data generation.
@@ -54,22 +58,23 @@ def sine_data_generation (no, seq_len, dim):
   data = list()
 
   # Generate sine data
-  for i in range(no):      
-    # Initialize each time-series
+  for i in range(no): # Generate no samples
+    # Initialize each time-series - each individual sample
     temp = list()
-    # For each feature
+    # For each feature - # of sine waves
     for k in range(dim):
       # Randomly drawn frequency and phase
-      freq = np.random.uniform(0, 0.1)            
-      phase = np.random.uniform(0, 0.1)
-          
+      # Each sine wave in each sample has different frequency and phase - creates diversity in the data
+      freq = np.random.uniform(0, 0.1) # Frequency - how fast the wave repeats
+      phase = np.random.uniform(0, 0.1) # Phase - where it starts (horizontal shift)
+      
       # Generate sine signal based on the drawn frequency and phase
       temp_data = [np.sin(freq * j + phase) for j in range(seq_len)] 
       temp.append(temp_data)
-        
-    # Align row/column
+    
+    # Align row/column - from dim x seq_len to seq_len x dim
     temp = np.transpose(np.asarray(temp))        
-    # Normalize to [0,1]
+    # Normalize to [0,1] - sine is naturally between -1 and 1
     temp = (temp + 1)*0.5
     # Stack the generated data
     data.append(temp)
@@ -107,7 +112,7 @@ def real_data_loading (data_name, seq_len):
     temp_data.append(_x)
         
   # Mix the datasets (to make it similar to i.i.d)
-  idx = np.random.permutation(len(temp_data))    
+  idx = np.random.permutation(len(temp_data))
   data = []
   for i in range(len(temp_data)):
     data.append(temp_data[idx[i]])
