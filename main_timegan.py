@@ -34,7 +34,7 @@ warnings.filterwarnings("ignore")
 # 1. TimeGAN model
 from timegan import timegan
 # 2. Data loading
-from data_loading import real_data_loading, sine_data_generation
+from data_loading import real_data_loading, sine_data_generation, air_compressor_loader
 # 3. Metrics
 from metrics.discriminative_metrics import discriminative_score_metrics
 from metrics.predictive_metrics import predictive_score_metrics
@@ -67,6 +67,9 @@ def main (args):
     # Set number of samples and its dimensions
     no, dim = 10000, 5
     ori_data = sine_data_generation(no, args.seq_len, dim)
+  elif args.data_name == 'air_healthy':
+    print("Loading Air Compressor Dataset")
+    ori_data = air_compressor_loader('./AirCompressor_Data/Healthy', args.seq_len)
     
   print(args.data_name + ' dataset is ready.')
     
@@ -118,8 +121,8 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument(
       '--data_name',
-      choices=['sine','stock','energy'],
-      default='stock',
+      choices=['sine','stock','energy','air_healthy'],
+      default='air_healthy',
       type=str)
   parser.add_argument(
       '--seq_len',

@@ -22,6 +22,44 @@ data_loading.py
 
 ## Necessary Packages
 import numpy as np
+import os
+
+def air_compressor_loader(folder_path, seq_len):
+  """
+  Loads .dat files from the Healthy folder
+  Windows them for TimeGAN
+  """
+  combined_data = []
+
+  # Get list of all .dat files
+  file_list = sorted([f for f in os.listdir(folder_path) if f.endswith('.dat')])
+  print(f"Loading {len(file_list)} files from {folder_path}")
+
+  for file_name in file_list:
+    file_path = os.path.join(folder_path, file_name)
+    data = np.loadtxt(file_path, delimiter=',')
+    combined_data.append(data)
+  
+  # Flatten all 225 recordings into a long 1D array, then reshape
+  flat_data = np.concatenate(combined_data).reshape(-1, 1)
+
+  # Normalization (TimeGAN assumes data is normalized between 0 and 1)
+  # Use MinMaxScaler function
+  norm_data = MinMaxScaler(flat_data)
+
+  # Windowing (Slice into sequences)
+  temp_data = []
+  for i in range(0, len(norm_data) - seq_len):
+    _x = norm_data[i:i + seq_len]
+    temp_data.append(_x)
+
+  # Shuffle the sequences
+  idx = np.random.permutation(len(temp_data))
+  output_data = []
+  for i in range(len(temp_data)):
+    output_data.append(temp_data[idx[i]])
+  
+  return output_data
 
 
 def MinMaxScaler(data):

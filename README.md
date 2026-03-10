@@ -73,3 +73,6 @@ $ python3 main_timegan.py --data_name stock --seq_len 24 --module gru
 -   generated_data: generated synthetic data
 -   metric_results: discriminative and predictive scores
 -   visualization: PCA and tSNE analysis
+
+# Command
+python main_timegan.py --data_name air_healthy --seq_len 24 --module gru --hidden_dim 24 --num_layer 3 --iteration 1 --batch_size 128 --metric_iteration 10
