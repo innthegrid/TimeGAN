@@ -36,9 +36,9 @@ from timegan import timegan
 # 2. Data loading
 from data_loading import real_data_loading, sine_data_generation, air_compressor_loader
 # 3. Metrics
-from metrics.discriminative_metrics import discriminative_score_metrics
-from metrics.predictive_metrics import predictive_score_metrics
-from metrics.visualization_metrics import visualization
+from TimeGAN.metrics.discriminative_metrics import discriminative_score_metrics
+from TimeGAN.metrics.predictive_metrics import predictive_score_metrics
+from TimeGAN.metrics.visualization_metrics import visualization
 
 
 def main (args):
