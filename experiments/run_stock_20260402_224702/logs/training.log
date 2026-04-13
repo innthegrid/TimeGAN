@@ -1,0 +1,31 @@
+Starting Experiment: run_stock_20260402_224702
+All outputs will be saved to: ./experiments/run_stock_20260402_224702
+Argumnts: Namespace(batch_size=32, data_name='stock', hidden_dim=24, iteration=50, metric_iteration=1, module='gru', num_layer=3, seq_len=24)
+
+stock dataset is ready.
+Start Embedding Network Training
+step: 0/50, e_loss: 0.3557
+Finish Embedding Network Training
+Start Training with Supervised Loss Only
+step: 0/50, s_loss: 0.1694
+Finish Training with Supervised Loss Only
+Start Joint Training
+step: 0/50, d_loss: 2.3185, g_loss_u: 0.5322, g_loss_s: 0.0952, g_loss_v: 0.3022, e_loss_t0: 0.1879
+Finish Joint Training
+Finish Synthetic Data Generation
+Computing discriminative score...
+Iteration 1: 0.5
+  Iteration 1: 0.047769789400822944
+Generating Visualizations
+[t-SNE] Computing 121 nearest neighbors...
+[t-SNE] Indexed 2000 samples in 0.000s...
+[t-SNE] Computed neighbors for 2000 samples in 0.100s...
+[t-SNE] Computed conditional probabilities for sample 1000 / 2000
+[t-SNE] Computed conditional probabilities for sample 2000 / 2000
+[t-SNE] Mean sigma: 0.003789
+[t-SNE] KL divergence after 250 iterations with early exaggeration: 53.677128
+[t-SNE] KL divergence after 300 iterations: 0.681197
+Plot saved to: ./experiments/run_stock_20260402_224702/plots/tsne_final.png
+
+Final Metric Results: {'discriminative': 0.5, 'predictive': 0.047769789400822944}
+Experiment run_stock_20260402_224702 complete.
