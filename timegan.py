@@ -223,8 +223,8 @@ def timegan (ori_data, parameters):
   GS_solver = tf.train.AdamOptimizer().minimize(G_loss_S, var_list = g_vars + s_vars)
         
   ## TimeGAN training   
-  # sess = tf.Session() # The environment where the graph is executed
-  # sess.run(tf.global_variables_initializer()) # Initialize all variables in the graph
+  sess = tf.Session() # The environment where the graph is executed
+  sess.run(tf.global_variables_initializer()) # Initialize all variables in the graph
   
   ## DELETE LATER
   saver = tf.train.Saver(max_to_keep=3)
