@@ -115,8 +115,20 @@ def main (args):
   parameters['batch_size'] = args.batch_size
   parameters['exp_dir'] = exp_dir
       
-  generated_data = timegan(ori_data, parameters)   
-  print('Finish Synthetic Data Generation')
+  if args.use_saved_data:
+    print("Loading saved data...")
+
+    base_path = "./experiments/run_air_healthy_20260413_212624/npy"
+    ori_data = np.load(os.path.join(base_path, "ori_data.npy"))
+    generated_data = np.load(os.path.join(base_path, "generated_data.npy"))
+
+  else:
+    generated_data = timegan(ori_data, parameters)
+    print('Finish Synthetic Data Generation')
+
+    # Save for future use
+    np.save(os.path.join(exp_dir, "npy", "ori_data.npy"), ori_data)
+    np.save(os.path.join(exp_dir, "npy", "generated_data.npy"), generated_data)
   
   ## Performance metrics   
   # Output initialization
@@ -196,6 +208,11 @@ if __name__ == '__main__':
       help='iterations of the metric computation',
       default=10,
       type=int)
+  parser.add_argument(
+      '--use_saved_data',
+      help='Skip training and load saved npy data',
+      action='store_true'
+  )
   
   args = parser.parse_args() 
   
