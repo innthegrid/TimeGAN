@@ -223,21 +223,24 @@ def timegan (ori_data, parameters):
   GS_solver = tf.train.AdamOptimizer().minimize(G_loss_S, var_list = g_vars + s_vars)
         
   ## TimeGAN training   
-  sess = tf.Session() # The environment where the graph is executed
-  sess.run(tf.global_variables_initializer()) # Initialize all variables in the graph
-  
-  ## DELETE LATER
+  sess = tf.Session()
+  sess.run(tf.global_variables_initializer())
+
   saver = tf.train.Saver(max_to_keep=3)
 
+  ckpt_dir = os.path.join(exp_dir, 'ckpt')
+  os.makedirs(ckpt_dir, exist_ok=True)
+
+  # Restore if provided
   ckpt_path = parameters.get('ckpt_path', None)
 
   if ckpt_path is not None:
-      print("Restoring model from:", ckpt_path)
-      saver.restore(sess, ckpt_path)
-      print("Model restored. Skipping training.")
-      skip_training = True
+    print("Restoring model from:", ckpt_path)
+    saver.restore(sess, ckpt_path)
+    print("Model restored. Skipping training.")
+    skip_training = True
   else:
-      skip_training = False
+    skip_training = False
     
   ## END DELETE LATER
     
@@ -258,10 +261,6 @@ def timegan (ori_data, parameters):
       if itt % 200 == 0:
         print('step: '+ str(itt) + '/' + str(iterations) + ', e_loss: ' + str(np.round(np.sqrt(step_e_loss),4)) )
         # saver.save(sess, ckpt_path, global_step=itt, latest_filename='embedder_ckpt')
-        
-        ## DELETE LATER
-        if not skip_training:
-          saver.save(sess, os.path.join(exp_dir, 'ckpt', 'final_model.ckpt'))
         
     print('Finish Embedding Network Training')
       
@@ -321,7 +320,11 @@ def timegan (ori_data, parameters):
   ## Synthetic data generation
   Z_mb = random_generator(no, z_dim, ori_time, max_seq_len)
   generated_data_curr = sess.run(X_hat, feed_dict={Z: Z_mb, X: ori_data, T: ori_time})    
-  saver.save(sess, os.path.join(exp_dir, 'ckpt', 'final_model.ckpt'))
+  # saver.save(sess, os.path.join(exp_dir, 'ckpt', 'final_model.ckpt'))
+  
+  ## DELETE LATER
+  if not skip_training:
+    saver.save(sess, os.path.join(ckpt_dir, 'final_model.ckpt'))
   
   generated_data = list()
     

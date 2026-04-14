@@ -113,7 +113,7 @@ def main (args):
   parameters['num_layer'] = args.num_layer
   parameters['iterations'] = args.iteration
   parameters['batch_size'] = args.batch_size
-  # parameters['exp_dir'] = exp_dir
+  parameters['exp_dir'] = exp_dir
   
   ## DELETE LATER
   if args.use_saved_data:
